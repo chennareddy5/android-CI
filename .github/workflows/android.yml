@@ -27,7 +27,7 @@ jobs:
       # Build with Gradle
       - name: Build with Gradle
         working-directory: android-demo-app   # Set the working directory to the Android project root
-        run: cd gradle/wrapper && ../../gradlew build   # Navigate to the gradle/wrapper directory and execute the Gradle wrapper script
+        run: ./gradlew build   # Execute the Gradle wrapper script to build the project
 
       # Additional steps for SonarQube analysis
       - name: Cache SonarQube packages
@@ -49,4 +49,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.sonartoken }}     # Use the secret named "sonartoken"
           SONAR_HOST_URL: ${{ secrets.sonarhost }}  # Use the secret named "sonarhost"
-        run: cd gradle/wrapper && ../../gradlew build sonar --info
+        run: cd android-demo-app && ./gradlew build sonar --info

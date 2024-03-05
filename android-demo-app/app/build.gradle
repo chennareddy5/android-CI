@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'org.sonarqube' version '3.5.0.2730'
 }
 
 android {
@@ -53,7 +54,6 @@ android {
 }
 
 dependencies {
-
     implementation 'androidx.core:core-ktx:1.5.0'
     implementation 'androidx.appcompat:appcompat:1.3.0'
     implementation 'com.google.android.material:material:1.3.0'
@@ -68,6 +68,7 @@ sonarqube {
     properties {
         property "sonar.projectKey", "android-app"
         property "sonar.projectName", "android-app"
+        // Add other SonarQube properties as needed
     }
 }
 

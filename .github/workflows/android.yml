@@ -30,6 +30,6 @@ jobs:
 
     # Build with Gradle
     - name: pwd
-      run: pwd 
+      run: pwd && ls -al
     - name: Build with Gradle
       run: ./android-demo-app/gradlew build --stacktrace

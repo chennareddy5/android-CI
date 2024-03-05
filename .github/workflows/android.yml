@@ -32,4 +32,4 @@ jobs:
     - name: pwd
       run: pwd && ls -al
     - name: Build with Gradle
-      run: ./android-demo-app/gradlew build --stacktrace
+      run: .//home/runner/work/android-CI/android-CI/android-demo-app/gradle build

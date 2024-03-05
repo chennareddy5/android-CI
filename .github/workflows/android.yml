@@ -20,16 +20,11 @@ jobs:
         distribution: 'temurin'
         cache: gradle
 
-    # Display directory structure
-    - name: Display Directory Structure
-      run: ls -R
-
     # Grant execute permission for gradlew
     - name: Grant execute permission for gradlew
       run: chmod +x android-demo-app/gradlew
 
     # Build with Gradle
-    - name: pwd
-      run: pwd && ls -al
     - name: Build with Gradle
-      run: /home/runner/work/android-CI/android-CI/android-demo-app/build.gradle
+      working-directory: android-demo-app   # Set the working directory to the Android project root
+      run: ./gradlew build   # Execute the Gradle wrapper script to build the project

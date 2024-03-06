@@ -43,11 +43,10 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
           restore-keys: ${{ runner.os }}-gradle
 
-     - name: Date and Time
-  run: |
-    echo "current_date_time=$(date +"%Y-%m-%d %H:%M:%S")" >> $GITHUB_ENV
-
-      
+      - name: Date and Time
+        run: |
+          echo "current_date_time=$(date +"%Y-%m-%d %H:%M:%S")" >> $GITHUB_ENV
+          
       - name: Build and analyze
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any

@@ -44,8 +44,8 @@ jobs:
           restore-keys: ${{ runner.os }}-gradle
 
       - name: Date and Time
-        run: |
-          echo "current_date_time=$(date +"%Y-%m-%d %H:%M:%S")" >> $GITHUB_ENV
+  run: echo "::set-output name=current_date_time::$(date +"%d-%m-%Y-%H-%I-%M-%S")"
+  id: date
           
       - name: Build and analyze
         env:
@@ -56,3 +56,12 @@ jobs:
         run: |
           echo "Current date and time: $CURRENT_DATE_TIME"
           cd android-demo-app && ./gradlew build sonar --info
+ - name: Copy APK files to a directory
+      run: |
+         mkdir -p apk-files/debug apk-files/release
+         
+         cp ${{ github.workspace }}/app/build/outputs/apk/debug/app-debug.apk ${{ github.workspace }}/apk-files/debug/app-debug.apk 
+         mv ${{ github.workspace }}/apk-files/debug/app-debug.apk ${{ github.workspace }}/apk-files/debug/app-debug-${{ steps.date.outputs.current_date_time }}.apk
+         
+         cp ${{ github.workspace }}/app/build/outputs/apk/release/app-release-unsigned.apk ${{ github.workspace }}/apk-files/release/app-release-unsigned.apk
+         mv ${{ github.workspace }}/apk-files/release/app-release-unsigned.apk ${{ github.workspace }}/apk-files/release/app-release-unsigned-${{ steps.date.outputs.current_date_time }}.apk

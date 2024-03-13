@@ -57,13 +57,23 @@ jobs:
 
       - name: Copy APK files to a directory
         run: |
-           mkdir -p apk-files/debug apk-files/release
-           
-           cp ${{ github.workspace }}/app/build/outputs/apk/debug/app-debug.apk ${{ github.workspace }}/apk-files/debug/app-debug.apk 
-           mv ${{ github.workspace }}/apk-files/debug/app-debug.apk ${{ github.workspace }}/apk-files/debug/app-debug-${{ steps.date.outputs.current_date_time }}.apk
-           
-           cp ${{ github.workspace }}/app/build/outputs/apk/release/app-release-unsigned.apk ${{ github.workspace }}/apk-files/release/app-release-unsigned.apk
-           mv ${{ github.workspace }}/apk-files/release/app-release-unsigned.apk ${{ github.workspace }}/apk-files/release/app-release-unsigned-${{ steps.date.outputs.current_date_time }}.apk
+          mkdir -p apk-files/debug apk-files/release
+          
+          # Check if the debug APK file exists before copying
+          if [ -f "${{ github.workspace }}/app/build/outputs/apk/debug/app-debug.apk" ]; then
+            cp ${{ github.workspace }}/app/build/outputs/apk/debug/app-debug.apk ${{ github.workspace }}/apk-files/debug/app-debug.apk 
+            mv ${{ github.workspace }}/apk-files/debug/app-debug.apk ${{ github.workspace }}/apk-files/debug/app-debug-${{ steps.date.outputs.current_date_time }}.apk
+          else
+            echo "Debug APK file does not exist."
+          fi
+          
+          # Check if the release APK file exists before copying
+          if [ -f "${{ github.workspace }}/app/build/outputs/apk/release/app-release-unsigned.apk" ]; then
+            cp ${{ github.workspace }}/app/build/outputs/apk/release/app-release-unsigned.apk ${{ github.workspace }}/apk-files/release/app-release-unsigned.apk
+            mv ${{ github.workspace }}/apk-files/release/app-release-unsigned.apk ${{ github.workspace }}/apk-files/release/app-release-unsigned-${{ steps.date.outputs.current_date_time }}.apk
+          else
+            echo "Release APK file does not exist."
+          fi
 
       - name: Upload apk-files Directory
         uses: actions/upload-artifact@v3

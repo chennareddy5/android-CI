@@ -76,7 +76,7 @@ jobs:
 
       # Gradle Deprecation Warnings
       - name: Build with Gradle (with warning mode all)
-        run: ./gradlew build --warning-mode all
+        run: chmod +x android-demo-app/gradlew build --warning-mode all
 
       # Copy APK files to a directory
       - name: Copy APK files to a directory

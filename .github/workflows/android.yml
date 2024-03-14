@@ -19,9 +19,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
       
-      # Set up JDK 11
       - name: Set up JDK 11
         uses: actions/setup-java@v3
         with:
@@ -29,16 +29,13 @@ jobs:
           distribution: 'temurin'
           cache: gradle
 
-      # Grant execute permission for gradlew
       - name: Grant execute permission for gradlew
         run: chmod +x android-demo-app/gradlew
 
-      # Build with Gradle
       - name: Build with Gradle
         working-directory: android-demo-app   
-        run: ./gradlew build   
+        run: ./gradlew build
 
-      # Cache SonarQube packages
       - name: Cache SonarQube packages
         uses: actions/cache@v1
         with:
@@ -46,7 +43,6 @@ jobs:
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
 
-      # Cache Gradle packages
       - name: Cache Gradle packages
         uses: actions/cache@v1
         with:
@@ -54,12 +50,10 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
           restore-keys: ${{ runner.os }}-gradle
 
-      # Date and Time
       - name: Date and Time
-        run: echo "::set-output name=current_date_time::$(date +'%d-%m-%Y-%H-%I-%M-%S')"
         id: date
-          
-      # Build and analyze with SonarQube
+        run: echo "::set-output name=current_date_time::$(date +'%d-%m-%Y-%H-%M-%S')"
+
       - name: Build and analyze with SonarQube
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
@@ -69,23 +63,16 @@ jobs:
         run: |
           echo "Current date and time: $CURRENT_DATE_TIME"
           cd android-demo-app && ./gradlew build sonar --info
-          
 
-      # Copy APK files to a directory
       - name: Copy APK files to a directory
         run: |
            mkdir -p apk-files/debug apk-files/release
-           
-           cp ${{ github.workspace }}/android-demo-app/app/build/outputs/apk/debug/app-debug.apk ${{ github.workspace }}/apk-files/debug/app-debug.apk 
-           mv ${{ github.workspace }}/apk-files/debug/app-debug.apk ${{ github.workspace }}/apk-files/debug/app-debug-${{ steps.date.outputs.current_date_time }}.apk
-           
-           cp ${{ github.workspace }}/android-demo-app/app/build/outputs/apk/release/app-release-unsigned.apk ${{ github.workspace }}/apk-files/release/app-release-unsigned.apk
-           mv ${{ github.workspace }}/apk-files/release/app-release-unsigned.apk ${{ github.workspace }}/apk-files/release/app-release-unsigned-${{ steps.date.outputs.current_date_time }}.apk
-      
-      # Upload apk-files Directory
+           cp ${{ github.workspace }}/android-demo-app/app/build/outputs/apk/debug/app-debug.apk ${{ github.workspace }}/apk-files/debug/app-debug-${{ steps.date.outputs.current_date_time }}.apk
+           cp ${{ github.workspace }}/android-demo-app/app/build/outputs/apk/release/app-release-unsigned.apk ${{ github.workspace }}/apk-files/release/app-release-unsigned-${{ steps.date.outputs.current_date_time }}.apk
+
       - name: Upload apk-files Directory
         uses: actions/upload-artifact@v3
         with:
-          name: apk-files-artifactory
+          name: apk-files-artifacts
           path: ${{ github.workspace }}/apk-files/
           if-no-files-found: ignore

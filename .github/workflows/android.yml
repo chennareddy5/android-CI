@@ -59,8 +59,8 @@ jobs:
         run: echo "::set-output name=current_date_time::$(date +'%d-%m-%Y-%H-%I-%M-%S')"
         id: date
           
-      # Build and analyze
-      - name: Build and analyze
+      # Build and analyze with SonarQube
+      - name: Build and analyze with SonarQube
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
           SONAR_TOKEN: ${{ secrets.sonartoken }}    
@@ -69,6 +69,14 @@ jobs:
         run: |
           echo "Current date and time: $CURRENT_DATE_TIME"
           cd android-demo-app && ./gradlew build sonar --info
+
+      # Git Fetch Unshallow
+      - name: Fetch Unshallow
+        run: git fetch --unshallow
+
+      # Gradle Deprecation Warnings
+      - name: Build with Gradle (with warning mode all)
+        run: ./gradlew build --warning-mode all
 
       # Copy APK files to a directory
       - name: Copy APK files to a directory

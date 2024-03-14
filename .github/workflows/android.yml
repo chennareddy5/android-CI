@@ -75,8 +75,8 @@ jobs:
         run: git fetch --unshallow
 
       # Gradle Deprecation Warnings
-      - name: Build with Gradle (with warning mode all)
-        run: ./gradlew build --warning-mode all
+      - name: Build with Gradle
+        run: ./gradlew build
 
       # Copy APK files to a directory
       - name: Copy APK files to a directory

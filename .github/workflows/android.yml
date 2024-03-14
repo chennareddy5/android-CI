@@ -68,7 +68,7 @@ jobs:
         run: |
           pwd
           mkdir -p apk-files/debug apk-files/release
-          cp ${{ github.workspace }/app/build/outputs/apk/debug/app-debug.apk ${{ github.workspace }}/apk-files/debug/app-debug-${{ steps.date.outputs.current_date_time }}.apk
+          cp ${{ github.workspace }}/app/build/outputs/apk/debug/app-debug.apk ${{ github.workspace }}/apk-files/debug/app-debug-${{ steps.date.outputs.current_date_time }}.apk
           cp ${{ github.workspace }}/app/build/outputs/apk/release/app-release-unsigned.apk ${{ github.workspace }}/apk-files/release/app-release-unsigned-${{ steps.date.outputs.current_date_time }}.apk
 
       - name: Upload apk-files Directory

@@ -69,14 +69,7 @@ jobs:
         run: |
           echo "Current date and time: $CURRENT_DATE_TIME"
           cd android-demo-app && ./gradlew build sonar --info
-      
-      # Git Fetch Unshallow
-      - name: Fetch Unshallow
-        run: git fetch --unshallow
-
-      # Gradle Deprecation Warnings
-      - name: Build with Gradle
-        run: ./gradlew build
+          
 
       # Copy APK files to a directory
       - name: Copy APK files to a directory

@@ -76,3 +76,10 @@ jobs:
           name: apk-files-artifacts
           path: ${{ github.workspace }}/apk-files/
           if-no-files-found: ignore
+
+      - name: Notification to Teams
+        uses: toko-bifrost/ms-teams-deploy-card@master #  or "./" if in a local set-up
+        if: always()
+        with:
+          github-token: ${{ secrets.CI_GITHUB_TOKEN }}
+          webhook-uri: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}

@@ -67,7 +67,7 @@ jobs:
       - name: Copy APK files to a directory
         run: |
           pwd
-          cd /home/runner/work/android-CI/android-CI/android-demo-app/app/build/outputs/apk/dev/debug
+          cd /home/runner/work/android-CI/android-CI/android-demo-app/app/build/outputs/apk/dev/release
           ls -la
           mkdir -p /home/runner/work/android-CI/android-CI/apk-files/debug /home/runner/work/android-CI/android-CI/apk-files/release
           cp app-dev-debug.apk /home/runner/work/android-CI/android-CI/apk-files/debug/app-debug-14-03-2024-14-32-02.apk

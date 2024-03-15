@@ -78,7 +78,7 @@ jobs:
           if-no-files-found: ignore
 
       - name: Notification to Teams
-        uses: toko-bifrost/ms-teams-deploy-card@master #  or "./" if in a local set-up
+        uses: ./path/to/ms-teams-deploy-card 
         if: always()
         with:
           github-token: ${{ secrets.CI_GITHUB_TOKEN }}

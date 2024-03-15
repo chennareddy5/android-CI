@@ -67,8 +67,8 @@ jobs:
       - name: Copy APK files to a directory
         run: |
           mkdir -p /home/runner/work/android-CI/android-CI/apk-files/debug /home/runner/work/android-CI/android-CI/apk-files/release
-          cp app-dev-debug.apk /home/runner/work/android-CI/android-CI/apk-files/debug/app-debug-14-03-2024-14-32-02.apk
-          cp app-dev-release-unsigned.apk /home/runner/work/android-CI/android-CI/apk-files/release/app-release-unsigned-14-03-2024-14-32-02.apk
+          cp /home/runner/work/android-CI/android-CI/android-demo-app/app/build/outputs/apk/dev/debug/app-dev-debug.apk /home/runner/work/android-CI/android-CI/apk-files/debug/app-debug-14-03-2024-14-32-02.apk
+          cp /home/runner/work/android-CI/android-CI/android-demo-app/app/build/outputs/apk/dev/release/app-dev-release-unsigned.apk /home/runner/work/android-CI/android-CI/apk-files/release/app-release-unsigned-14-03-2024-14-32-02.apk
 
       - name: Upload apk-files Directory
         uses: actions/upload-artifact@v3

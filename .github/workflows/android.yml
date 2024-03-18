@@ -86,7 +86,7 @@ jobs:
       - name: List files 
         run: |
           pwd
-          ls -la android-demo-app/app/src
+          ls -la android-demo-app/app/src/androidTest
 
       - name: Notification to Teams
         uses: ./custom-action-path

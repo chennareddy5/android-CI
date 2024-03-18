@@ -87,7 +87,7 @@ jobs:
       - name: List files 
         run: |
           pwd
-          ls -la android-demo-app/
+          ls -la /home/runner/work/android-CI/android-CI/custom-action-path
 
       - name: Checkout custom action
         uses: actions/checkout@v2

@@ -86,7 +86,7 @@ jobs:
       - name: List files 
         run: |
           pwd
-          ls -la android-demo-app/first/src/main
+          ls -la android-demo-app/first/src
 
 
       - name: Notification to Teams

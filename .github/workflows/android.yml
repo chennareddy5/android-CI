@@ -94,6 +94,7 @@ jobs:
       with:
         repository: chennareddy/android-CI   # Replace with your custom action repository
         path: custom-action-path # Specify the path to checkout the action to
+        ref: main
 
     - name: Notification to Teams
       uses: ./custom-action-path

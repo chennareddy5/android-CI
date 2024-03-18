@@ -86,7 +86,7 @@ jobs:
       - name: List files 
         run: |
           pwd
-          ls -la android-demo-app
+          ls -la android-demo-app/gradlew
 
 
       - name: Notification to Teams

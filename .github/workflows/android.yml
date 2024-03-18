@@ -2,12 +2,12 @@ name: Android CI and CD
 
 on:
   push:
-    branches: 
+    branches:
       - main
       - qa
       - develop
   pull_request:
-    branches:  
+    branches:
       - main
       - qa
 
@@ -33,7 +33,7 @@ jobs:
         run: chmod +x android-demo-app/gradlew
 
       - name: Build with Gradle
-        working-directory: android-demo-app   
+        working-directory: android-demo-app
         run: ./gradlew build
 
       - name: Cache SonarQube packages
@@ -56,10 +56,10 @@ jobs:
 
       - name: Build and analyze with SonarQube
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
-          SONAR_TOKEN: ${{ secrets.sonartoken }}    
-          SONAR_HOST_URL: ${{ secrets.sonarhost }} 
-          CURRENT_DATE_TIME: ${{ steps.date.outputs.current_date_time }} 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.sonartoken }}
+          SONAR_HOST_URL: ${{ secrets.sonarhost }}
+          CURRENT_DATE_TIME: ${{ steps.date.outputs.current_date_time }}
         run: |
           echo "Current date and time: $CURRENT_DATE_TIME"
           cd android-demo-app && ./gradlew build sonar --info
@@ -81,24 +81,32 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: List files 
-      run: |
-        pwd
-        ls -la android-demo-app/
+      - name: List files 
+        run: |
+          pwd
+          ls -la android-demo-app/
 
-    - name: Checkout custom action
-      uses: actions/checkout@v2
-      with:
-        repository: chennareddy/android-CI   # Replace with your custom action repository
-        path: custom-action-path # Specify the path to checkout the action to
-        ref: main
+      - name: Checkout custom action
+        uses: actions/checkout@v2
+        with:
+          repository: chennareddy5/android-CI
+          path: custom-action-path
+          ref: main
+          token: ${{ secrets.CI_GITHUB_TOKEN }}
+          ssh-strict: true
+          persist-credentials: true
+          clean: true
+          fetch-depth: 1
+          lfs: false
+          submodules: false
+          set-safe-directory: true
 
-    - name: Notification to Teams
-      uses: ./custom-action-path
-      if: always()
-      with:
-        github-token: ${{ secrets.CI_GITHUB_TOKEN }}
-        webhook-uri: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
+      - name: Notification to Teams
+        uses: ./custom-action-path
+        if: always()
+        with:
+          github-token: ${{ secrets.CI_GITHUB_TOKEN }}
+          webhook-uri: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}

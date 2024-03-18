@@ -83,9 +83,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+      - name: List files in ms-teams-deploy-card directory
+        run: |
+          pwd
+          ls -la path/to/ms-teams-deploy-card
 
       - name: Notification to Teams
-        uses: path/to/ms-teams-deploy-card 
         if: always()
         with:
           webhook-uri: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}

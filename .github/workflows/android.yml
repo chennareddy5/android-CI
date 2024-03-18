@@ -81,17 +81,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: List files 
-        run: |
-          pwd
-          ls -la android-demo-app/gradle/wrapper
+    - name: Checkout code
+      uses: actions/checkout@v2
 
+    - name: List files 
+      run: |
+        pwd
+        ls -la android-demo-app/first/src/androidTest/java/com/first/ExampleInstrumentedTest.kt
 
-      - name: Notification to Teams
-        uses: ./custom-action-path
-        if: always()
-        with:
-          github-token: ${{ secrets.CI_GITHUB_TOKEN }}
-          webhook-uri: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
+    - name: Checkout custom action
+      uses: actions/checkout@v2
+      with:
+        repository: owner/repo   # Replace with your custom action repository
+        path: custom-action-path # Specify the path to checkout the action to
+
+    - name: Notification to Teams
+      uses: ./custom-action-path
+      if: always()
+      with:
+        github-token: ${{ secrets.CI_GITHUB_TOKEN }}
+        webhook-uri: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}

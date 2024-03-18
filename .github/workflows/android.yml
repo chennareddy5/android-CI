@@ -89,6 +89,7 @@ jobs:
           ls -la path/to/ms-teams-deploy-card
 
       - name: Notification to Teams
+        uses: ./custom-action-path
         if: always()
         with:
           webhook-uri: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}

@@ -87,7 +87,7 @@ jobs:
     - name: List files 
       run: |
         pwd
-        ls -la android-demo-app/first/src/androidTest/java/com/first/ExampleInstrumentedTest.kt
+        ls -la android-demo-app/
 
     - name: Checkout custom action
       uses: actions/checkout@v2

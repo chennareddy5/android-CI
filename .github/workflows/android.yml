@@ -83,10 +83,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: List files in ms-teams-deploy-card directory
+      - name: List files 
         run: |
           pwd
-          ls -la path/to/ms-teams-deploy-card
+          ls -la 
 
       - name: Notification to Teams
         uses: ./custom-action-path

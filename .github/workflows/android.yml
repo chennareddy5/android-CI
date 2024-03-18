@@ -92,7 +92,7 @@ jobs:
     - name: Checkout custom action
       uses: actions/checkout@v2
       with:
-        repository: owner/repo   # Replace with your custom action repository
+        repository: chennareddy/android-CI   # Replace with your custom action repository
         path: custom-action-path # Specify the path to checkout the action to
 
     - name: Notification to Teams

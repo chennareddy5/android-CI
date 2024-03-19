@@ -76,92 +76,13 @@ jobs:
           name: apk-files-artifacts
           path: ${{ github.workspace }}/apk-files/
           if-no-files-found: ignore
-
-name: Android CI and CD
-
-on:
-  push:
-    branches:
-      - main
-      - qa
-      - develop
-  pull_request:
-    branches:
-      - main
-      - qa
-
-env:
-  AWS_DEFAULT_REGION: "us-east-1"
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up JDK 11
-        uses: actions/setup-java@v3
-        with:
-          java-version: '11'
-          distribution: 'temurin'
-          cache: gradle
-
-      - name: Grant execute permission for gradlew
-        run: chmod +x android-demo-app/gradlew
-
-      - name: Build with Gradle
-        working-directory: android-demo-app
-        run: ./gradlew build
-
-      - name: Cache SonarQube packages
-        uses: actions/cache@v1
-        with:
-          path: ~/.sonar/cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
-
-      - name: Cache Gradle packages
-        uses: actions/cache@v1
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
-          restore-keys: ${{ runner.os }}-gradle
-
-      - name: Date and Time
-        id: date
-        run: echo "::set-output name=current_date_time::$(date +'%d-%m-%Y-%H-%M-%S')"
-
-      - name: Build and analyze with SonarQube
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.sonartoken }}
-          SONAR_HOST_URL: ${{ secrets.sonarhost }}
-          CURRENT_DATE_TIME: ${{ steps.date.outputs.current_date_time }}
-        run: |
-          echo "Current date and time: $CURRENT_DATE_TIME"
-          cd android-demo-app && ./gradlew build sonar --info
-
-      - name: Copy APK files to a directory
-        run: |
-          mkdir -p /home/runner/work/android-CI/android-CI/apk-files/debug /home/runner/work/android-CI/android-CI/apk-files/release
-          cp /home/runner/work/android-CI/android-CI/android-demo-app/app/build/outputs/apk/dev/debug/app-dev-debug.apk /home/runner/work/android-CI/android-CI/apk-files/debug/app-debug-14-03-2024-14-32-02.apk
-          cp /home/runner/work/android-CI/android-CI/android-demo-app/app/build/outputs/apk/dev/release/app-dev-release-unsigned.apk /home/runner/work/android-CI/android-CI/apk-files/release/app-release-unsigned-14-03-2024-14-32-02.apk
-
-      - name: Upload apk-files Directory
-        uses: actions/upload-artifact@v3
-        with:
-          name: apk-files-artifacts
-          path: ${{ github.workspace }}/apk-files/
-          if-no-files-found: ignore
-
-  check_notification:
+          
     name: Check notification
-    on:
+    
+      on:
       push: {}
       release: {}
-    jobs:
+      jobs:
       success:
         name: One with everything
         runs-on: ubuntu-18.04

@@ -89,20 +89,31 @@ jobs:
           webhook-uri: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
 
   deploy:
-   runs-on: ubuntu-latest
-   needs: build
-   if: contains(github.ref, 'refs/heads/qa') || contains(github.ref, 'refs/heads/main')
-   steps:
-    - name: Check out Git Repository
-      uses: actions/checkout@v2
+    runs-on: ubuntu-latest
+    needs: build
+    if: contains(github.ref, 'refs/heads/qa') || contains(github.ref, 'refs/heads/main')
+    steps:
+      - name: Check out Git Repository
+        uses: actions/checkout@v2
 
-    - name: Download apk-files-artifacts
-      uses: actions/download-artifact@v3
-      with:
-        name: apk-files-artifacts
-        path: ${{ github.workspace }}/apk-files/
+      - name: Download apk-files-artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: apk-files-artifacts
+          path: ${{ github.workspace }}/apk-files/
 
-    - name: Display structure of downloaded files of Artifact 
-      run: ls -R
-      working-directory: ${{ github.workspace }}/apk-files/
+      - name: Display structure of downloaded files of Artifact 
+        run: ls -R
+        working-directory: ${{ github.workspace }}/apk-files/
 
+      - name: Public IP of Github Hosted Runner
+        id: ip
+        uses: haythem/public-ip@v1.3
+
+      - name: Add Github Actions IP to Security group
+        run: |
+          aws ec2 authorize-security-group-ingress --group-id ${{ secrets.JFROG_SG_ID }} --protocol tcp --port 8082 --cidr ${{ steps.ip.outputs.ipv4 }}/32
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: 'us-east-1'

@@ -87,5 +87,4 @@ jobs:
         with:
           github-token: ${{ secrets.CI_GITHUB_TOKEN }}
           webhook-uri: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
-        outputs:
-          CURRENT_DATE_TIME: ${{ steps.date.outputs.current_date_time }}
+       

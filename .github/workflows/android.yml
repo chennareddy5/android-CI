@@ -97,7 +97,8 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Display current directory contents
-        run: ls -la
+        run: |
+         sudo ls -la
         working-directory: ${{ github.workspace }}/apk-files/
       
       - name: Download apk-files Artifactory

@@ -106,16 +106,3 @@ jobs:
       run: ls -R
       working-directory: ${{ github.workspace }}/apk-files/
 
-    - name: Copy APK files to a directory
-      run: |
-        mkdir -p /home/runner/work/android-CI/android-CI/apk-files/debug /home/runner/work/android-CI/android-CI/apk-files/release
-        cp -r ${{ github.workspace }}/apk-files/* /home/runner/work/android-CI/android-CI/apk-files/debug/
-        cp -r ${{ github.workspace }}/apk-files/* /home/runner/work/android-CI/android-CI/apk-files/release/
-
-
-    - name: Upload apk-files Directory
-      uses: actions/upload-artifact@v3
-      with:
-        name: apk-files-artifacts
-        path: ${{ github.workspace }}/apk-files/
-        if-no-files-found: ignore

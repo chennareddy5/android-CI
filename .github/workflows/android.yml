@@ -108,7 +108,7 @@ jobs:
 
       - name: Public IP of Github Hosted Runner
         id: ip
-        uses: haythem/public-ip@v1.3
+        uses: chennareddy5/public-ip@v1.3
 
       - name: Add Github Actions IP to Security group
         run: |

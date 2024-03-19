@@ -76,13 +76,13 @@ jobs:
           name: apk-files-artifacts
           path: ${{ github.workspace }}/apk-files/
           if-no-files-found: ignore
-          
-    check_notification:
-      name: Check notification    
-      on:
+
+  check_notification:
+    name: Check notification    
+    on:
       push: {}
       release: {}
-      jobs:
+    jobs:
       success:
         name: One with everything
         runs-on: ubuntu-18.04
@@ -97,7 +97,6 @@ jobs:
               job: ${{ toJson(job) }}
               steps: ${{ toJson(steps) }}
               dry_run: True
-
 
       without_optional_params:
         name: One with little info

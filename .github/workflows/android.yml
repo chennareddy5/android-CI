@@ -77,8 +77,8 @@ jobs:
           path: ${{ github.workspace }}/apk-files/
           if-no-files-found: ignore
           
-    name: Check notification
-    
+    check_notification:
+      name: Check notification    
       on:
       push: {}
       release: {}
@@ -136,4 +136,16 @@ jobs:
                 {
                   "@type": "MessageCard",
                   "@context": "http://schema.org/extensions",
-                  "title
+                  "title": "No ${variables} available in here"
+                }
+
+      if_failure:
+        name: Only if failure
+        runs-on: ubuntu-18.04
+        steps:
+          - uses: actions/checkout@master
+          - name: Microsoft Teams Notification
+            uses: skitionek/notify-microsoft-teams@master
+            if: failure()
+            with:
+              webhook_url: ${{ secrets.MSTEAMS_WEBHOOK }}

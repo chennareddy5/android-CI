@@ -125,37 +125,5 @@ jobs:
             uses: skitionek/notify-microsoft-teams@master
             if: always()
             with:
-              webhook_url: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
-              overwrite: "{title: `Overwrote title in ${workflow_link}`}"
-
-      with_raw:
-        name: One with raw data
-        runs-on: ubuntu-18.04
-        steps:
-          - name: Checkout code
-            uses: actions/checkout@v2
-          
-          - name: Microsoft Teams Notification
-            uses: skitionek/notify-microsoft-teams@master
-            if: always()
-            with:
-              webhook_url: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
-              raw: >-
-                {
-                  "@type": "MessageCard",
-                  "@context": "http://schema.org/extensions",
-                  "title": "No ${variables} available in here"
-                }
-
-      if_failure:
-        name: Only if failure
-        runs-on: ubuntu-18.04
-        steps:
-          - name: Checkout code
-            uses: actions/checkout@v2
-          
-          - name: Microsoft Teams Notification
-            uses: skitionek/notify-microsoft-teams@master
-            if: failure()
-            with:
-              webhook_url: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
+            webhook_url: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
+            overwrite: "{title: `Overwrote title in ${workflow_link}`}"

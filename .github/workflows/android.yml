@@ -129,7 +129,8 @@ jobs:
       - name: Create folder for qa and main branch in apk-files
         run: |
           if [[ ${{ github.ref }} == 'refs/heads/qa' ]]; then
-               cd ${{ github.workspace }}/apk-files && mkdir -p qa && mv debug/ qa/ && mv release/ qa/
+             cd /home/runner/work/android-CI/android-CI/apk-files && mkdir -p qa && mv debug/ qa/ && mv release/ qa/
           elif [[ ${{ github.ref }} == 'refs/heads/main' ]]; then
-               cd ${{ github.workspace }}/apk-files && mkdir -p main && mv debug/ master/ && mv release/ main/
+             cd /home/runner/work/android-CI/android-CI/apk-files && mkdir -p main && mv debug/ main/ && mv release/ main/
           fi
+

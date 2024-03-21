@@ -67,8 +67,8 @@ jobs:
       - name: Copy APK files to a directory
         run: |
           mkdir -p /home/runner/work/android-CI/android-CI/apk-files/debug /home/runner/work/android-CI/android-CI/apk-files/release
-          cp /home/runner/work/android-CI/android-CI/android-demo-app/app/build/outputs/apk/dev/debug/app-dev-debug.apk /home/runner/work/android-CI/android-CI/apk-files/debug/app-debug-14-03-2024-14-32-02.apk
-          cp /home/runner/work/android-CI/android-CI/android-demo-app/app/build/outputs/apk/dev/release/app-dev-release-unsigned.apk /home/runner/work/android-CI/android-CI/apk-files/release/app-release-unsigned-14-03-2024-14-32-02.apk
+          cp /home/runner/work/android-CI/android-CI/android-demo-app/app/build/outputs/apk/dev/debug/app-dev-debug.apk /home/runner/work/android-CI/android-CI/apk-files/debug/app-debug-${{ steps.date.outputs.current_date_time }}.apk
+          cp /home/runner/work/android-CI/android-CI/android-demo-app/app/build/outputs/apk/dev/release/app-dev-release-unsigned.apk /home/runner/work/android-CI/android-CI/apk-files/release/app-release-unsigned-${{ steps.date.outputs.current_date_time }}.apk
 
       - name: Upload apk-files Directory
         uses: actions/upload-artifact@v3
@@ -132,4 +132,14 @@ jobs:
             cd /home/runner/work/android-CI/android-CI/apk-files && mkdir -p qa && mv debug/ qa/ && mv release/ qa/
           elif [[ ${{ github.ref }} == 'refs/heads/main' ]]; then
             cd /home/runner/work/android-CI/android-CI/apk-files && mkdir -p main && mv debug/ main/ && mv release/ main/
+          fi
+
+      - name: Upload APK files to Jfrog
+        run: |
+          if [[ ${{ github.ref }} == 'refs/heads/qa' ]]; then
+            jf rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} apk-files/qa/debug/app-debug-${{ needs.build.outputs.CURRENT_DATE_TIME }}.apk android-artifact/
+            jf rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} apk-files/qa/release/app-release-unsigned-${{ needs.build.outputs.CURRENT_DATE_TIME }}.apk android-artifact/
+          elif [[ ${{ github.ref }} == 'refs/heads/master' ]]; then
+            jf rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} apk-files/master/debug/app-debug-${{ needs.build.outputs.CURRENT_DATE_TIME }}.apk android-artifact/
+            jf rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} apk-files/master/release/app-release-unsigned-${{ needs.build.outputs.CURRENT_DATE_TIME }}.apk android-artifact/
           fi

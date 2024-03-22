@@ -127,7 +127,7 @@ jobs:
           JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
 
       - name: Create folder for qa and master branch in apk-files
-         run: 
+        run: 
          if [[ refs/heads/main == 'refs/heads/qa' ]]; then
           if [[ refs/heads/main == 'refs/heads/qa' ]]; then
           cd /home/runner/work/android-CI/android-CI/apk-files && mkdir -p qa && mv debug/ qa/ && mv release/ qa/

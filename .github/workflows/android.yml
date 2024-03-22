@@ -128,16 +128,21 @@ jobs:
 
       - name: Create folder for qa and main branch in apk-files
         run: 
-         if [[ refs/heads/main == 'refs/heads/qa' ]]; then
-          if [[ refs/heads/main == 'refs/heads/qa' ]]; then
-          cd /home/runner/work/android-CI/android-CI/apk-files && mkdir -p qa && mv debug/ qa/ && mv release/ qa/
-           if [[ -d "/home/runner/work/android-CI/android-CI/apk-files/qa" ]]; then
-          echo "QA directory created successfully."
+         if [[ $GITHUB_REF == 'refs/heads/qa' ]]; then
+         cd /home/runner/work/android-CI/android-CI/apk-files
+         mkdir -p qa
+         mv debug/ qa/
+         mv release/ qa/
+         if [[ -d "/home/runner/work/android-CI/android-CI/apk-files/qa" ]]; then
+         echo "QA directory created successfully."
          else
          echo "Failed to create QA directory."
          fi
-         elif [[ refs/heads/main == 'refs/heads/main' ]]; then
-         cd /home/runner/work/android-CI/android-CI/apk-files && mkdir -p main && mv debug/ main/ && mv release/ main/
+         elif [[ $GITHUB_REF == 'refs/heads/main' ]]; then
+         cd /home/runner/work/android-CI/android-CI/apk-files
+         mkdir -p main
+         mv debug/ main/
+         mv release/ main/
          if [[ -d "/home/runner/work/android-CI/android-CI/apk-files/main" ]]; then
          echo "Main directory created successfully."
          else

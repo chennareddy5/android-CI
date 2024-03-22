@@ -128,38 +128,30 @@ jobs:
 
       - name: Create folder for qa and main branch in apk-files
         run: |
-         if [[ "${{ github.ref }}" == 'refs/heads/qa' ]]; then
-         cd "${{ github.workspace }}/apk-files" && mkdir -p qa && mv debug/ qa/ && mv release/ qa/
-         elif [[ "${{ github.ref }}" == 'refs/heads/main' ]]; then
-         cd "${{ github.workspace }}/apk-files" && mkdir -p main && mv debug/ main/ && mv release/ main/
+         if [[ "refs/heads/main" == 'refs/heads/qa' ]]; then
+         cd "/home/runner/work/android-CI/android-CI/apk-files" && mkdir -p qa && mv debug/ qa/ && mv release/ qa/
+         elif [[ "refs/heads/main" == 'refs/heads/main' ]]; then
+         cd "/home/runner/work/android-CI/android-CI/apk-files" && mkdir -p main && mv debug/ main/ && mv release/ main/
          fi
 
-         - name: Check directory structure
-           run: |
-           ls -l ${GITHUB_WORKSPACE}/android-CI/android-CI/apk-files/qa/debug
-           ls -l ${GITHUB_WORKSPACE}/android-CI/android-CI/apk-files/qa/release
-           ls -l ${GITHUB_WORKSPACE}/android-CI/android-CI/apk-files/main/debug
-          ls -l ${GITHUB_WORKSPACE}/android-CI/android-CI/apk-files/main/release
-
-         - name: Print current working directory
-         run: pwd
-
-
-      - name: Upload QA debug APKs to JFrog
+      - name: Check directory structure
         run: |
-         jf rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} "${{ github.workspace }}/android-CI/android-CI/apk-files/qa/debug/*.apk" "android-artifact/qa/debug/"
+         ls -l "${GITHUB_WORKSPACE}/android-CI/android-CI/apk-files/qa/debug"
+         ls -l "${GITHUB_WORKSPACE}/android-CI/android-CI/apk-files/qa/release"
+         ls -l "${GITHUB_WORKSPACE}/android-CI/android-CI/apk-files/main/debug"
+         ls -l "${GITHUB_WORKSPACE}/android-CI/android-CI/apk-files/main/release"
 
-      - name: Upload QA release APKs to JFrog
-        run: |
-         jf rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} "${{ github.workspace }}/android-CI/android-CI/apk-files/qa/release/*.apk" "android-artifact/qa/release/"
+      - name: Print current working directory
+        run: pwd
+        env:
+          AWS_DEFAULT_REGION: us-east-1
+          JFROG_CLI_ENV_EXCLUDE: "*password*;*secret*;*key*;*token*;*auth*;JF_ARTIFACTORY_*;JF_ENV_*;JF_URL;JF_USER;JF_PASSWORD;JF_ACCESS_TOKEN"
+          JFROG_CLI_OFFER_CONFIG: false
+          JFROG_CLI_BUILD_NAME: Android CI and CD
+          JFROG_CLI_BUILD_NUMBER: 188
+          JFROG_CLI_BUILD_URL: https://github.com/chennareddy5/android-CI/actions/runs/8391970187
+          JFROG_CLI_USER_AGENT: setup-jfrog-cli-github-action/3.5.3  
 
-      - name: Upload main debug APKs to JFrog
-        run: |
-         jf rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} "${{ github.workspace }}/android-CI/android-CI/apk-files/main/debug/*.apk" "android-artifact/main/debug/"
 
-      - name: Upload main release APKs to JFrog
-        run: |
-         jf rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} "${{ github.workspace }}/android-CI/android-CI/apk-files/main/release/*.apk" "android-artifact/main/release/"
-
-
+        
 

@@ -126,13 +126,14 @@ jobs:
           JF_URL: https://acm.jfrog.io/artifactory/gradle-release/
           JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
 
-      - name: Create folder for qa and master branch in apk-files
+      - name: Create folder for qa and main branch in apk-files
         run: |
-         if [[ ${{ github.ref }} == 'refs/heads/qa' ]]; then
-             cd ${{ github.workspace }}/apk-files && mkdir -p qa && mv debug/ qa/ && mv release/ qa/
-         elif [[ ${{ github.ref }} == 'refs/heads/master' ]]; then
-             cd ${{ github.workspace }}/apk-files && mkdir -p master && mv debug/ master/ && mv release/ master/
+         if [[ "${{ github.ref }}" == 'refs/heads/qa' ]]; then
+         cd "${{ github.workspace }}/apk-files" && mkdir -p qa && mv debug/ qa/ && mv release/ qa/
+         elif [[ "${{ github.ref }}" == 'refs/heads/main' ]]; then
+         cd "${{ github.workspace }}/apk-files" && mkdir -p main && mv debug/ main/ && mv release/ main/
          fi
+
          - name: Check directory structure
            run: |
            ls -l ${GITHUB_WORKSPACE}/android-CI/android-CI/apk-files/qa/debug

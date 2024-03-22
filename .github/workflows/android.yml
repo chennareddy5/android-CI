@@ -134,6 +134,17 @@ jobs:
              cd ${{ github.workspace }}/apk-files && mkdir -p master && mv debug/ master/ && mv release/ master/
          fi
 
+         - name: Check directory structure
+           run: |
+           ls -l ${GITHUB_WORKSPACE}/android-CI/android-CI/apk-files/qa/debug
+           ls -l ${GITHUB_WORKSPACE}/android-CI/android-CI/apk-files/qa/release
+           ls -l ${GITHUB_WORKSPACE}/android-CI/android-CI/apk-files/main/debug
+          ls -l ${GITHUB_WORKSPACE}/android-CI/android-CI/apk-files/main/release
+
+         - name: Print current working directory
+         run: pwd
+
+
       - name: Upload QA debug APKs to JFrog
         run: |
          jf rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} "${{ github.workspace }}/android-CI/android-CI/apk-files/qa/debug/*.apk" "android-artifact/qa/debug/"

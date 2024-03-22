@@ -135,11 +135,22 @@ jobs:
           fi
 
       - name: Upload APK files to Jfrog
-        if: ${{ contains(github.ref, 'refs/heads/main') || contains(github.ref, 'refs/heads/qa') }}
+        if: ${{ github.ref == 'refs/heads/main' || github.ref == 'refs/heads/qa' }}
         run: |
-          if [[ ${{ github.ref }} == 'refs/heads/qa' ]]; then
-            jf rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} "/home/runner/work/android-CI/android-CI/apk-files/qa/debug/*.apk" "android-artifact/qa/debug/"
-            jf rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} "/home/runner/work/android-CI/android-CI/apk-files/qa/release/*.apk" "android-artifact/qa/release/"
-          elif [[ ${{ github.ref }} == 'refs/heads/main' ]]; then
-            jf rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} "/home/runner/work
+         if [[ ${{ github.ref }} == 'refs/heads/qa' ]]; then
+         jf rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} "/home/runner/work/android-CI/android-CI/apk-files/qa/debug/*.apk" "android-artifact/qa/debug/"
+         jf rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} "/home/runner/work/android-CI/android-CI/apk-files/qa/release/*.apk" "android-artifact/qa/release/"
+         elif [[ ${{ github.ref }} == 'refs/heads/main' ]]; then
+         jf rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} "/home/runner/work/android-CI/android-CI/apk-files/main/debug/*.apk" "android-artifact/main/debug/"
+         jf rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} "/home/runner/work/android-CI/android-CI/apk-files/main/release/*.apk" "android-artifact/main/release/"
+         fi
+         shell: /usr/bin/bash -e {0}
+         env:
+         AWS_DEFAULT_REGION: us-east-1
+         JFROG_CLI_ENV_EXCLUDE: "*password*;*secret*;*key*;*token*;*auth*;JF_ARTIFACTORY_*;JF_ENV_*;JF_URL;JF_USER;JF_PASSWORD;JF_ACCESS_TOKEN"
+         JFROG_CLI_OFFER_CONFIG: false
+         JFROG_CLI_BUILD_NAME: Android CI and CD
+         JFROG_CLI_BUILD_NUMBER: 169
+         JFROG_CLI_BUILD_URL: https://github.com/chennareddy5/android-CI/actions/runs/8388405401
+         JFROG_CLI_USER_AGENT: setup-jfrog-cli-github-action/3.5.3
 

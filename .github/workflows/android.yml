@@ -134,16 +134,21 @@ jobs:
              cd ${{ github.workspace }}/apk-files && mkdir -p master && mv debug/ master/ && mv release/ master/
          fi
 
-      - name: Upload APK files to Jfrog
+      - name: Upload QA debug APKs to JFrog
         run: |
-         if [[ ${{ github.ref }} == 'refs/heads/main' || ${{ github.ref }} == 'refs/heads/qa' ]]; then
-         if [[ ${{ github.ref }} == 'refs/heads/qa' ]]; then
-         jf rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} "/home/runner/work/android-CI/android-CI/apk-files/qa/debug/*.apk" "android-artifact/qa/debug/"
-         jf rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} "/home/runner/work/android-CI/android-CI/apk-files/qa/release/*.apk" "android-artifact/qa/release/"
-         elif [[ ${{ github.ref }} == 'refs/heads/main' ]]; then
-          jf rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} "/home/runner/work/android-CI/android-CI/apk-files/main/debug/*.apk" "android-artifact/main/debug/"
-          jf rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} "/home/runner/work/android-CI/android-CI/apk-files/main/release/*.apk" "android-artifact/main/release/"
-          fi
-          fi  
+         jf rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} "${{ github.workspace }}/android-CI/android-CI/apk-files/qa/debug/*.apk" "android-artifact/qa/debug/"
+
+      - name: Upload QA release APKs to JFrog
+        run: |
+         jf rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} "${{ github.workspace }}/android-CI/android-CI/apk-files/qa/release/*.apk" "android-artifact/qa/release/"
+
+      - name: Upload main debug APKs to JFrog
+        run: |
+         jf rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} "${{ github.workspace }}/android-CI/android-CI/apk-files/main/debug/*.apk" "android-artifact/main/debug/"
+
+      - name: Upload main release APKs to JFrog
+        run: |
+         jf rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} "${{ github.workspace }}/android-CI/android-CI/apk-files/main/release/*.apk" "android-artifact/main/release/"
+
 
 

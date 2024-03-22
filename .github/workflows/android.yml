@@ -135,13 +135,13 @@ jobs:
           fi
 
           - name: Upload APK files to Jfrog
-        if: ${{ github.ref == 'refs/heads/main' || github.ref == 'refs/heads/qa' }}
-         run:|
-         if [[ ${{ github.ref }} == 'refs/heads/qa' ]]; then
-         jf rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} "/home/runner/work/android-CI/android-CI/apk-files/qa/debug/*.apk" "android-artifact/qa/debug/"
-         jf rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} "/home/runner/work/android-CI/android-CI/apk-files/qa/release/*.apk" "android-artifact/qa/release/"
-         elif [[ ${{ github.ref }} == 'refs/heads/main' ]]; then
-         jf rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} "/home/runner/work/android-CI/android-CI/apk-files/main/debug/*.apk" "android-artifact/main/debug/"
-         jf rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} "/home/runner/work/android-CI/android-CI/apk-files/main/release/*.apk" "android-artifact/main/release/"
-         fi
+           if: ${{ github.ref == 'refs/heads/main' || github.ref == 'refs/heads/qa' }}
+           run:|
+           if [[ ${{ github.ref }} == 'refs/heads/qa' ]]; then
+           jf rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} "/home/runner/work/android-CI/android-CI/apk-files/qa/debug/*.apk" "android-artifact/qa/debug/"
+           jf rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} "/home/runner/work/android-CI/android-CI/apk-files/qa/release/*.apk" "android-artifact/qa/release/"
+           elif [[ ${{ github.ref }} == 'refs/heads/main' ]]; then
+          jf rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} "/home/runner/work/android-CI/android-CI/apk-files/main/debug/*.apk" "android-artifact/main/debug/"
+          jf rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} "/home/runner/work/android-CI/android-CI/apk-files/main/release/*.apk" "android-artifact/main/release/"
+          fi
          

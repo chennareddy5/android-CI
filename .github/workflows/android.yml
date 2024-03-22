@@ -134,42 +134,30 @@ jobs:
             cd /home/runner/work/android-CI/android-CI/apk-files && mkdir -p main && mv debug/ main/ && mv release/ main/
           fi
 
-           name: Push Build to Artifactory
+          name: Push Build to Artifactory
 
-            on:
-              push:
+          on:
+            push:
+
+             jobs:
+              build:
+              runs-on: ubuntu-latest
+
+             steps:
+      - name: Check if branch is main or qa
+        run: |
+          if [[ ${{ github.ref }} == 'refs/heads/qa' ]]; then
+            cd /home/runner/work/android-CI/android-CI/apk-files && mkdir -p qa && mv debug/ qa/ && mv release/ qa/
+          elif [[ ${{ github.ref }} == 'refs/heads/main' ]]; then
+            cd /home/runner/work/android-CI/android-CI/apk-files && mkdir -p main && mv debug/ main/ && mv release/ main/
+          fi
       
-           jobs: 
-            build:
-             runs-on: ubuntu-latest
-            steps:
-      # This action checks out the code from the repository
-      - name: Checkout Code
-        uses: actions/checkout@v2
-
-      # This action sets up the JFrog CLI with the Artifactory URL and access token     
-      - uses: jfrog/setup-jfrog-cli@v3
+      - name: Configure JFrog CLI
+        uses: jfrog/setup-jfrog-cli@v3
         env:
-          JF_URL: ${{ secrets.ARTIFACTORY_URL }}
-          JF_ACCESS_TOKEN: ${{ secrets.ARTIFACTORY_ACCESS_TOKEN }}
-
-      # This command adds a new server configuration to the JFrog CLI   
-      - run: |
-          export SERVER_ID="test"
-          jf c add $SERVER_ID --url=$URL --access-token=$ACCESS_TOKEN --interactive=false
-
-      # This action creates a new test file and uploads it to Artifactory   
-      - name: Push Build to Artifactory
-        run: |
-          echo "test file " > test.txt
-          export BUILD_NAME="my-build"
-          export BUILD_MODULE="my-module"
-          export BUILD_NUMBER="1"
-          export PATH_TO_DIRECTORY="name/version/dates"
-          jf rt upload "test.txt" example-repo-local/$PATH_TO_DIRECTORY --build-name $BUILD_NAME --build-number $BUILD_NUMBER --module $BUILD_MODULE
-
-      # This action publishes the build information to Artifactory and deletes older builds
-      - name: Build to Artifactory
-        run: |
-          jf rt build-publish $BUILD_NAME $BUILD_NUMBER
-          jf rt bdi c --max-builds=1
+          JFROG_CLI_ENV_EXCLUDE: *password*;*secret*;*key*;*token*;*auth*;JF_ARTIFACTORY_*;JF_ENV_*;JF_URL;JF_USER;JF_PASSWORD;JF_ACCESS_TOKEN
+          JFROG_CLI_OFFER_CONFIG: false
+          JFROG_CLI_BUILD_NAME: Android CI and CD
+          JFROG_CLI_BUILD_NUMBER: 171
+          JFROG_CLI_BUILD_URL: https://github.com/chennareddy5/android-CI/actions/runs/8389489929
+          JFROG_CLI_USER_AGENT: setup-jfrog-cli-github-action/3.5.3

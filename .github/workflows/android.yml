@@ -133,7 +133,6 @@ jobs:
          elif [[ ${{ github.ref }} == 'refs/heads/master' ]]; then
              cd ${{ github.workspace }}/apk-files && mkdir -p master && mv debug/ master/ && mv release/ master/
          fi
-
          - name: Check directory structure
            run: |
            ls -l ${GITHUB_WORKSPACE}/android-CI/android-CI/apk-files/qa/debug

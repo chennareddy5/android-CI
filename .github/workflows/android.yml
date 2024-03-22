@@ -127,11 +127,22 @@ jobs:
           JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
 
       - name: Create folder for qa and master branch in apk-files
-        run: |
-         if [[ ${{ github.ref }} == 'refs/heads/qa' ]]; then
-         cd ${{ github.workspace }}/apk-files && mkdir -p qa && mv debug/ qa/ && mv release/ qa/
-         elif [[ ${{ github.ref }} == 'refs/heads/master' ]]; then
-         cd ${{ github.workspace }}/apk-files && mkdir -p master && mv debug/ master/ && mv release/ master/
+         Run 
+         if [[ refs/heads/main == 'refs/heads/qa' ]]; then
+          if [[ refs/heads/main == 'refs/heads/qa' ]]; then
+          cd /home/runner/work/android-CI/android-CI/apk-files && mkdir -p qa && mv debug/ qa/ && mv release/ qa/
+           if [[ -d "/home/runner/work/android-CI/android-CI/apk-files/qa" ]]; then
+          echo "QA directory created successfully."
+         else
+         echo "Failed to create QA directory."
+         fi
+         elif [[ refs/heads/main == 'refs/heads/master' ]]; then
+         cd /home/runner/work/android-CI/android-CI/apk-files && mkdir -p master && mv debug/ master/ && mv release/ master/
+         if [[ -d "/home/runner/work/android-CI/android-CI/apk-files/master" ]]; then
+         echo "Master directory created successfully."
+         else
+         echo "Failed to create Master directory."
+         fi
          fi
 
       - name: Upload APK files to Jfrog

@@ -139,13 +139,13 @@ jobs:
         run: |
          if [[ ${{ github.ref }} == 'refs/heads/main' || ${{ github.ref }} == 'refs/heads/qa' ]]; then
          if [[ ${{ github.ref }} == 'refs/heads/qa' ]]; then
-         jf rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} "/home/runner/work/android-CI/android-CI/apk-files/qa/debug/*.apk" "android-artifact/qa/debug/"
-         jf rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} "/home/runner/work/android-CI/android-CI/apk-files/qa/release/*.apk" "android-artifact/qa/release/"
+         jfrog rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} "/home/runner/work/android-CI/android-CI/apk-files/qa/debug/*.apk" "android-artifact/qa/debug/"
+         jfrog rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} "/home/runner/work/android-CI/android-CI/apk-files/qa/release/*.apk" "android-artifact/qa/release/"
          elif [[ ${{ github.ref }} == 'refs/heads/main' ]]; then
-          jf rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} "/home/runner/work/android-CI/android-CI/apk-files/main/debug/*.apk" "android-artifact/main/debug/"
-          jf rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} "/home/runner/work/android-CI/android-CI/apk-files/main/release/*.apk" "android-artifact/main/release/"
-          fi
-          fi  
+         jfrog rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} "/home/runner/work/android-CI/android-CI/apk-files/main/debug/*.apk" "android-artifact/main/debug/"
+         jfrog rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} "/home/runner/work/android-CI/android-CI/apk-files/main/release/*.apk" "android-artifact/main/release/"
+         fi
+         fi
 
 
 

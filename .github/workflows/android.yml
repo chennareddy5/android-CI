@@ -134,16 +134,21 @@ jobs:
          cd "/home/runner/work/android-CI/android-CI/apk-files" && mkdir -p main && mv debug/ main/ && mv release/ main/
          fi
 
-      - name: Check directory structure
+      
+      - name: Upload APK files to Jfrog
         run: |
-         ls -l "${GITHUB_WORKSPACE}/android-CI/android-CI/apk-files/qa/debug"
-         ls -l "${GITHUB_WORKSPACE}/android-CI/android-CI/apk-files/qa/release"
-         ls -l "${GITHUB_WORKSPACE}/android-CI/android-CI/apk-files/main/debug"
-         ls -l "${GITHUB_WORKSPACE}/android-CI/android-CI/apk-files/main/release"
+         if [[ ${{ github.ref }} == 'refs/heads/main' || ${{ github.ref }} == 'refs/heads/qa' ]]; then
+         if [[ ${{ github.ref }} == 'refs/heads/qa' ]]; then
+         jf rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} "/home/runner/work/android-CI/android-CI/apk-files/qa/debug/*.apk" "android-artifact/qa/debug/"
+         jf rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} "/home/runner/work/android-CI/android-CI/apk-files/qa/release/*.apk" "android-artifact/qa/release/"
+         elif [[ ${{ github.ref }} == 'refs/heads/main' ]]; then
+          jf rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} "/home/runner/work/android-CI/android-CI/apk-files/main/debug/*.apk" "android-artifact/main/debug/"
+          jf rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} "/home/runner/work/android-CI/android-CI/apk-files/main/release/*.apk" "android-artifact/main/release/"
+          fi
+          fi  
 
-      - name: Print current working directory
-        run: pwd
-        
+
+
 
 
         

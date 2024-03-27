@@ -148,8 +148,8 @@ jobs:
           fi
           fi  
 
-
-
+          - name: Upload individual APK file
+            run: jfrog rt upload "apk-files" jfrog-gradle-dev-local --url=https://cloud12.jfrog.io/ui/admin/repositories/ --server-id=local
 
 
 

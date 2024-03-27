@@ -133,7 +133,6 @@ jobs:
          elif [[ "refs/heads/main" == 'refs/heads/main' ]]; then
          cd "/home/runner/work/android-CI/android-CI/apk-files" && mkdir -p main && mv debug/ main/ && mv release/ main/
          fi
-
           - name: Upload individual APK file
             run: jfrog rt upload "apk-files" jfrog-gradle-dev-local --url=https://cloud12.jfrog.io/ui/admin/repositories/ --server-id=local
 

@@ -126,29 +126,19 @@ jobs:
           JF_URL: https://acm.jfrog.io/artifactory/gradle-release/
           JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
 
-      - name: Create folder for qa and master branch in apk-files
+      - name: Create folder for qa and master
         run: |
-         if [[ ${{ github.ref }} == 'refs/heads/qa' ]]; then
-             cd ${{ github.workspace }}/apk-files && mkdir -p qa && mv debug/ qa/ && mv release/ qa/
-         elif [[ ${{ github.ref }} == 'refs/heads/master' ]]; then
-             cd ${{ github.workspace }}/apk-files && mkdir -p master && mv debug/ master/ && mv release/ master/
-         fi
+          if [[ ${{ github.ref }} == 'refs/heads/qa' ]]; then
+              cd ${{ github.workspace }}/apk-files && mkdir -p qa && mv debug/ qa/ && mv release/ qa/
+          elif [[ ${{ github.ref }} == 'refs/heads/main' ]]; then
+              cd ${{ github.workspace }}/apk-files && mkdir -p master && mv debug/ master/ && mv release/ master/
+          fi
 
-      - name: Upload APK files to Jfrog
+      - name: Upload APK to JFrog Artifactory
+        env:
+          JFROG_URL: ${{ secrets.JFROG_URL }}
+          JFROG_USER: ${{ secrets.JFROG_USER }}
+          JFROG_PASSWORD: ${{ secrets.JFROG_PASSWORD }}
         run: |
-         ls -l apk-files/qa/debug
-         ls -l apk-files/qa/release
-         ls -l apk-files/main/debug
-         ls -l apk-files/main/release
-    
-         if [[ ${{ github.ref }} == 'refs/heads/qa' ]]; then
-         jf rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} apk-files/qa/debug/app-debug-14-03-2024-14-32-02.apk  android-artifact/
-         jf rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} apk-files/qa/release/app-release-unsigned-14-03-2024-14-32-02.apk android-artifact/
-         elif [[ ${{ github.ref }} == 'refs/heads/main' ]]; then
-         jf rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} apk-files/main/debug/app-debug-14-03-2024-14-32-02.apk  android-artifact/
-         jf rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} apk-files/main/release/app-release-unsigned-14-03-2024-14-32-02.apk android-artifact/
-         fi
-
-
-        
-
+          jfrog rt u --url $JFROG_URL --user $JFROG_USER --password $JFROG_PASSWORD \
+            "/home/runner/work/android-CI/android-CI/apk-files/*.apk" "jfrog-gradle-dev/apk-folder/"

@@ -124,8 +124,8 @@ jobs:
         env:
           # JFrog platform url (for example: https://acme.jfrog.io) 
           JF_URL: https://cloud12.jfrog.io/artifactory/jfrog-gradle-release/
-           JF_USER:${{ secrets.JFROG_USERNAME }}
-           JF_PASSWORD:${{ secrets.JFROG_PASSWORD }}
+           JF_USER:chennareddy2912@gmail.com
+           JF_PASSWORD:Jfrog@2912
       - name: Create folder for qa and main
         run: |
           if [[ ${{ github.ref }} == 'refs/heads/qa' ]]; then
@@ -136,4 +136,5 @@ jobs:
 
       - name: Upload APK files to Artifactory
         run: |
-          jfrog rt u "${{ github.workspace }}/apk-files/*.apk" "jfrog-gradle-releasee/apk-folder/"
+          jfrog rt u "/home/runner/work/android-CI/android-CI/apk-files/*.apk" "jfrog-gradle-releasee/apk-folder/"
+

@@ -129,8 +129,8 @@ jobs:
         run: |
           if [[ ${{ github.ref }} == 'refs/heads/qa' ]]; then
             cd ${{ github.workspace }}/apk-files && mkdir -p qa && mv debug/ qa/ && mv release/ qa/
-          elif [[ ${{ github.ref }} == 'refs/heads/master' ]]; then
-            cd ${{ github.workspace }}/apk-files && mkdir -p master && mv debug/ master/ && mv release/ master/
+          elif [[ ${{ github.ref }} == 'refs/heads/main' ]]; then
+            cd ${{ github.workspace }}/apk-files && mkdir -p main && mv debug/ main/ && mv release/ main/
           fi
 
       - name: Upload APK files to JFrog
@@ -138,7 +138,7 @@ jobs:
           if [[ ${{ github.ref }} == 'refs/heads/qa' ]]; then
             jfrog rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} apk-files/qa/debug/app-debug-${{ needs.build.outputs.CURRENT_DATE_TIME }}.apk android-artifact/
             jfrog rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} apk-files/qa/release/app-release-unsigned-${{ needs.build.outputs.CURRENT_DATE_TIME }}.apk android-artifact/
-          elif [[ ${{ github.ref }} == 'refs/heads/master' ]]; then
-            jfrog rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} apk-files/master/debug/app-debug-${{ needs.build.outputs.CURRENT_DATE_TIME }}.apk android-artifact/
-            jfrog rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} apk-files/master/release/app-release-unsigned-${{ needs.build.outputs.CURRENT_DATE_TIME }}.apk android-artifact/
+          elif [[ ${{ github.ref }} == 'refs/heads/main' ]]; then
+            jfrog rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} apk-files/main/debug/app-debug-${{ needs.build.outputs.CURRENT_DATE_TIME }}.apk android-artifact/
+            jfrog rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} apk-files/main/release/app-release-unsigned-${{ needs.build.outputs.CURRENT_DATE_TIME }}.apk android-artifact/
           fi

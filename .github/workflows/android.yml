@@ -123,7 +123,7 @@ jobs:
           version: latest
         env:
           # JFrog platform url (for example: https://acme.jfrog.io) 
-          JF_URL: https://acm.jfrog.io/artifactory/gradle-release/
+          JF_URL: https://cloud12.jfrog.io/artifactory/jfrog-gradle-release/
            JF_USER:${{ secrets.JFROG_USERNAME }}
            JF_PASSWORD:${{ secrets.JFROG_PASSWORD }}
       - name: Create folder for qa and main

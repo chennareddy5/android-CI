@@ -123,6 +123,7 @@ jobs:
         with:
           version: latest
         env:
+          # JFrog platform url (for example: https://acme.jfrog.io) 
           JF_URL: https://cloud12.jfrog.io/artifactory/jfrog-gradle-release/
           JF_USER: chennareddy2912@gmail.com
           JF_PASSWORD: Jfrog@2912
@@ -130,11 +131,11 @@ jobs:
       - name: Create folder for qa and main
         run: |
           if [[ ${{ github.ref }} == 'refs/heads/qa' ]]; then
-              cd ${{ github.workspace }}/apk-files && mkdir -p qa && mv debug/ qa/ && mv release/ qa/
+            cd ${{ github.workspace }}/apk-files && mkdir -p qa && mv debug/ qa/ && mv release/ qa/
           elif [[ ${{ github.ref }} == 'refs/heads/main' ]]; then
-              cd ${{ github.workspace }}/apk-files && mkdir -p main && mv debug/ main/ && mv release/ main/
+            cd ${{ github.workspace }}/apk-files && mkdir -p main && mv debug/ main/ && mv release/ main/
           fi
 
       - name: Upload APK files to Artifactory
         run: |
-          jfrog rt u "/home/runner/work/android-CI/android-CI/apk-files/*.apk" "jfrog-gradle-releasee/apk-folder/"
+          jfrog rt u "/home/runner/work/android-CI/android-CI/apk-files/*.apk" "jfrog-gradle-release/apk-folder/"

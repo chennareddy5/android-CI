@@ -63,7 +63,7 @@ jobs:
         run: |
           echo "Current date and time: $CURRENT_DATE_TIME"
           cd android-demo-app && ./gradlew build sonar --info
-          
+
       - name: Copy APK files to a directory
         run: |
           mkdir -p /home/runner/work/android-CI/android-CI/apk-files/debug /home/runner/work/android-CI/android-CI/apk-files/release
@@ -118,16 +118,6 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: 'us-east-1'
 
-      - name: Setup JFrog CLI
-        uses: jfrog/setup-jfrog-cli@v3
-        with:
-          version: latest
-        env:
-          # JFrog platform url (for example: https://acme.jfrog.io) 
-          JF_URL: https://cloud12.jfrog.io/artifactory/jfrog-gradle-release/
-          JF_USER: chennareddy2912@gmail.com
-          JF_PASSWORD: ${{ secrets.JFROG_PASSWORD }}
-
       - name: Create folder for qa and main
         run: |
           if [[ ${{ github.ref }} == 'refs/heads/qa' ]]; then
@@ -135,6 +125,7 @@ jobs:
           elif [[ ${{ github.ref }} == 'refs/heads/main' ]]; then
               cd ${{ github.workspace }}/apk-files && mkdir -p main && mv debug/ main/ && mv release/ main/
           fi
+
       - name: Upload APK files to Artifactory
         run: |
-          jfrog rt u "${{ github.workspace }}/apk-files/*.apk" "jfrog-gradle-releasee/apk-folder/"
+          jfrog rt u "${{ github.workspace }}/apk-files/*.apk" "jfrog-gradle-release/apk-folder/"

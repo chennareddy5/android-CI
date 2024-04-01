@@ -117,15 +117,16 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: 'us-east-1'
-
-      - uses: jfrog/setup-jfrog-cli@v3
+          
+      - name: Setup JFrog CLI
+        uses: jfrog/setup-jfrog-cli@v3
         with:
           version: latest
         env:
-          # JFrog platform url (for example: https://acme.jfrog.io) 
           JF_URL: https://cloud12.jfrog.io/artifactory/jfrog-gradle-release/
-           JF_USER:chennareddy2912@gmail.com
-           JF_PASSWORD:Jfrog@2912
+          JF_USER: chennareddy2912@gmail.com
+          JF_PASSWORD: Jfrog@2912
+
       - name: Create folder for qa and main
         run: |
           if [[ ${{ github.ref }} == 'refs/heads/qa' ]]; then
@@ -137,4 +138,3 @@ jobs:
       - name: Upload APK files to Artifactory
         run: |
           jfrog rt u "/home/runner/work/android-CI/android-CI/apk-files/*.apk" "jfrog-gradle-releasee/apk-folder/"
-

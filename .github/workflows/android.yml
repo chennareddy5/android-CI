@@ -125,20 +125,21 @@ jobs:
           JF_URL: ${{ secrets.JF_URL }}
           JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
 
-      - name: Create folder for qa and main branch in apk-files
+      - name: Create folder for qa and master branch in apk-files
         run: |
           if [[ ${{ github.ref }} == 'refs/heads/qa' ]]; then
             cd ${{ github.workspace }}/apk-files && mkdir -p qa && mv debug/ qa/ && mv release/ qa/
-          elif [[ ${{ github.ref }} == 'refs/heads/main' ]]; then
-            cd ${{ github.workspace }}/apk-files && mkdir -p main && mv debug/ main/ && mv release/ main/
+          elif [[ ${{ github.ref }} == 'refs/heads/master' ]]; then
+            cd ${{ github.workspace }}/apk-files && mkdir -p main && mv debug/ master/ && mv release/ master/
           fi
 
-      - name: Upload APK files to JFrog
-        run: |
+      -  name: Upload APK files to Jfrog
+         run: |
           if [[ ${{ github.ref }} == 'refs/heads/qa' ]]; then
-            jfrog rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} apk-files/debug/app-debug-02-04-2024-10-45-07.apk android-artifact/
-            jfrog rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} apk-files/qa/release/app-release-unsigned-02-04-2024-10-45-07.apk android-artifact/
-          elif [[ ${{ github.ref }} == 'refs/heads/main' ]]; then
-            jfrog rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} apk-files/main/debug/app-debug-02-04-2024-10-45-07.apk android-artifact/
-            jfrog rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} apk-files/main/release/app-release-unsigned-02-04-2024-10-45-07.apk android-artifact/
+            jf rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} apk-files/qa/debug/app-debug-${{ needs.build.outputs.CURRENT_DATE_TIME }}.apk android-artifact/
+            jf rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} apk-files/qa/release/app-release-unsigned-${{ needs.build.outputs.CURRENT_DATE_TIME }}.apk android-artifact/
+          elif [[ ${{ github.ref }} == 'refs/heads/master' ]]; then
+            jf rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} apk-files/master/debug/app-debug-${{ needs.build.outputs.CURRENT_DATE_TIME }}.apk android-artifact/
+            jf rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} apk-files/master/release/app-release-unsigned-${{ needs.build.outputs.CURRENT_DATE_TIME }}.apk android-artifact/
           fi
+

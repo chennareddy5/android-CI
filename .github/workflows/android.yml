@@ -3,12 +3,12 @@ name: Android CI and CD
 on:
   push:
     branches:
-      - master
+      - main
       - qa
       - develop
   pull_request:
     branches:
-      - master
+      - main
       - qa
 
 env:
@@ -63,13 +63,13 @@ jobs:
         run: |
           echo "Current date and time: $CURRENT_DATE_TIME"
           cd android-demo-app && ./gradlew build sonar --info
-
+      
       - name: Copy APK files to a directory
         run: |
           mkdir -p ${{ github.workspace }}/apk-files/debug ${{ github.workspace }}/apk-files/release
           cp android-demo-app/app/build/outputs/apk/dev/debug/app-dev-debug.apk ${{ github.workspace }}/apk-files/debug/app-debug-${{ steps.date.outputs.current_date_time }}.apk
           cp android-demo-app/app/build/outputs/apk/dev/release/app-dev-release-unsigned.apk ${{ github.workspace }}/apk-files/release/app-release-unsigned-${{ steps.date.outputs.current_date_time }}.apk
-
+      
       - name: Upload apk-files Directory
         uses: actions/upload-artifact@v3
         with:
@@ -118,27 +118,29 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: 'us-east-1'
 
-      - uses: jfrog/setup-jfrog-cli@v3
+      - name: Setup JFrog CLI
+        uses: jfrog/setup-jfrog-cli@v3
         with:
           version: latest
         env:
           JF_URL: ${{ secrets.JF_URL }}
           JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
 
-      - name: Create folder for qa and master branch in apk-files
+      - name: Create folder for qa and main branch in apk-files
         run: |
           if [[ ${{ github.ref }} == 'refs/heads/qa' ]]; then
             cd ${{ github.workspace }}/apk-files && mkdir -p qa && mv debug/ qa/ && mv release/ qa/
-          elif [[ ${{ github.ref }} == 'refs/heads/master' ]]; then
-            cd ${{ github.workspace }}/apk-files && mkdir -p main && mv debug/ master/ && mv release/ master/
+          elif [[ ${{ github.ref }} == 'refs/heads/main' ]]; then
+            cd ${{ github.workspace }}/apk-files && mkdir -p main && mv debug/ main/ && mv release/ main/
           fi
-
-      -  name: Upload APK files to Jfrog
-          Run if [[ refs/heads/main == 'refs/heads/qa' ]]; then
-          if [[ refs/heads/main == 'refs/heads/qa' ]]; then
-          jf rt u --url *** --user *** --password *** apk-files/qa/debug/app-debug-02-04-2024-10-45-07.apk android-artifact/
-          jf rt u --url *** --user *** --password *** apk-files/qa/release/app-release-unsigned-02-04-2024-10-45-07.apk android-artifact/
-          elif [[ refs/heads/main == 'refs/heads/master' ]]; then
-          jf rt u --url *** --user *** --password *** apk-files/master/debug/app-debug-02-04-2024-10-45-07.apk android-artifact/
-          jf rt u --url *** --user *** --password *** apk-files/master/release/app-release-unsigned-02-04-2024-10-45-07.apk android-artifact/
+      
+      - name: Upload APK files to JFrog
+        if: ${{ github.ref == 'refs/heads/qa' || github.ref == 'refs/heads/main' }}
+        run: |
+          if [[ ${{ github.ref }} == 'refs/heads/qa' ]]; then
+            jfrog rt u --url *** --user *** --password *** apk-files/qa/debug/app-debug-02-04-2024-10-45-07.apk android-artifact/
+            jfrog rt u --url *** --user *** --password *** apk-files/qa/release/app-release-unsigned-02-04-2024-10-45-07.apk android-artifact/
+          elif [[ ${{ github.ref }} == 'refs/heads/main' ]]; then
+            jfrog rt u --url *** --user *** --password *** apk-files/main/debug/app-debug-02-04-2024-10-45-07.apk android-artifact/
+            jfrog rt u --url *** --user *** --password *** apk-files/main/release/app-release-unsigned-02-04-2024-10-45-07.apk android-artifact/
           fi

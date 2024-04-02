@@ -115,7 +115,7 @@ jobs:
           aws ec2 authorize-security-group-ingress --group-id ${{ secrets.JFROG_SG_ID }} --protocol tcp --port 8082 --cidr ${{ steps.ip.outputs.ipv4 }}/32
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.SECRET_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.SECRET_ACCESS_KEY }} 
           AWS_DEFAULT_REGION: 'us-east-1'
 
       - name: Setup JFrog CLI

@@ -134,12 +134,11 @@ jobs:
           fi
 
       -  name: Upload APK files to Jfrog
-         run: |
-          if [[ ${{ github.ref }} == 'refs/heads/qa' ]]; then
-            jf rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} apk-files/qa/debug/app-debug-${{ needs.build.outputs.CURRENT_DATE_TIME }}.apk android-artifact/
-            jf rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} apk-files/qa/release/app-release-unsigned-${{ needs.build.outputs.CURRENT_DATE_TIME }}.apk android-artifact/
-          elif [[ ${{ github.ref }} == 'refs/heads/master' ]]; then
-            jf rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} apk-files/master/debug/app-debug-${{ needs.build.outputs.CURRENT_DATE_TIME }}.apk android-artifact/
-            jf rt u --url ${{ secrets.JF_URL }} --user ${{ secrets.JF_USER }} --password ${{ secrets.JF_PASSWORD }} apk-files/master/release/app-release-unsigned-${{ needs.build.outputs.CURRENT_DATE_TIME }}.apk android-artifact/
+          Run if [[ refs/heads/main == 'refs/heads/qa' ]]; then
+          if [[ refs/heads/main == 'refs/heads/qa' ]]; then
+          jf rt u --url *** --user *** --password *** apk-files/qa/debug/app-debug-02-04-2024-10-45-07.apk android-artifact/
+          jf rt u --url *** --user *** --password *** apk-files/qa/release/app-release-unsigned-02-04-2024-10-45-07.apk android-artifact/
+          elif [[ refs/heads/main == 'refs/heads/master' ]]; then
+          jf rt u --url *** --user *** --password *** apk-files/master/debug/app-debug-02-04-2024-10-45-07.apk android-artifact/
+          jf rt u --url *** --user *** --password *** apk-files/master/release/app-release-unsigned-02-04-2024-10-45-07.apk android-artifact/
           fi
-

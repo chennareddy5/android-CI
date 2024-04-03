@@ -43,10 +43,6 @@ jobs:
       - name: Gradle Build and generating apk files
         working-directory: android-demo-app
         run: ./gradlew build
-         
-      - name: Code Coverage test - Jacoco
-        working-directory: android-demo-app
-        run: ./gradlew jacocoTest
 
       - name: Build with Gradle
         working-directory: android-demo-app

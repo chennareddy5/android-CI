@@ -14,7 +14,7 @@ buildscript {
 }
 
 plugins {
-    id "org.sonarqube" version "3.0"
+    id "org.sonarqube" version "3.0" // Update the syntax here
 }
 
 task clean(type: Delete) {
@@ -38,7 +38,9 @@ tasks.register('getOutputsZip', Zip) {
 // Update the SonarQube task if present
 tasks.withType(org.sonarqube.gradle.SonarQubeTask) {
     // Add any SonarQube configurations here
-    properties {
-        property "sonar.gradle.skipCompile", "true"
+    doFirst {
+        properties {
+            property "sonar.gradle.skipCompile", "true"
+        }
     }
 }

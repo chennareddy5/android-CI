@@ -14,12 +14,31 @@ buildscript {
 }
 
 plugins {
-    id "org.sonarqube" "3.0"
+    id 'org.sonarqube' version '3.0'
 }
 
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
-apply from :"$rootProject.rootDir/scripts/output-archive.gradle"
-apply from :"$rootProject.rootDir/scripts/email-commit.gradle"
+tasks.register('getOutputsZip', Zip) {
+    archiveFileName = "outputs.zip"
+    destinationDirectory = file(rootProject.buildDir)
+    from("${rootProject.rootDir}/app/build/outputs/apk/dev/debug") {
+        include "*.apk"
+    }
+    from("${rootProject.rootDir}/first/build/outputs/aar") {
+        include "*.aar"
+    }
+    from("${rootProject.rootDir}/app/build/outputs/aar") {
+        include "*.aar"
+    }
+}
+
+// Update the SonarQube task if present
+tasks.withType(org.sonarqube.gradle.SonarQubeTask) {
+    // Add any SonarQube configurations here
+    properties {
+        property "sonar.gradle.skipCompile", "true"
+    }
+}

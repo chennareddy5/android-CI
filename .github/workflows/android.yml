@@ -33,9 +33,11 @@ jobs:
         run: chmod +x android-demo-app/gradlew
 
       - name: Gradle Clean
+        working-directory: android-demo-app
         run: ./gradlew clean
       
       - name: Gradle Lint
+        working-directory: android-demo-app
         run: ./gradlew lint
       
       - name: Gradle Build and generating apk files

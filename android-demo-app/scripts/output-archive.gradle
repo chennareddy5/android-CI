@@ -6,7 +6,16 @@ tasks.register('getOutputsZip', Zip) {
     }
     from("${rootProject.rootDir}/first/build/outputs/aar") {
         include "*.aar"
-    } from("${rootProject.rootDir}/app/build/outputs/aar") {
+    }
+    from("${rootProject.rootDir}/app/build/outputs/aar") {
         include "*.aar"
+    }
+}
+
+// Update the SonarQube task if present
+tasks.sonarqube {
+    // Add any SonarQube configurations here
+    properties {
+        property "sonar.gradle.skipCompile", "true"
     }
 }

@@ -44,10 +44,6 @@ jobs:
         working-directory: android-demo-app
         run: ./gradlew build
 
-      - name: Build with Gradle
-        working-directory: android-demo-app
-        run: ./gradlew build
-
       - name: Cache SonarQube packages
         uses: actions/cache@v1
         with:

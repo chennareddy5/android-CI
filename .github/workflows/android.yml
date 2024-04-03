@@ -32,6 +32,20 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x android-demo-app/gradlew
 
+      - name: Gradle Clean
+        run: ./gradlew clean
+      
+      - name: Gradle Lint
+        run: ./gradlew lint
+      
+      - name: Gradle Build and generating apk files
+        working-directory: android-demo-app
+        run: ./gradlew build
+         
+      - name: Code Coverage test - Jacoco
+        working-directory: android-demo-app
+        run: ./gradlew jacocoTest
+
       - name: Build with Gradle
         working-directory: android-demo-app
         run: ./gradlew build
@@ -138,9 +152,8 @@ jobs:
         if: ${{ github.ref == 'refs/heads/qa' || github.ref == 'refs/heads/main' }}
         run: |
          if [[ ${{ github.ref }} == 'refs/heads/qa' ]]; then
-         jfrog rt u --url http://54.234.41.180:8082/ui/repos/tree/General/gradle-dev --user admin --password Jfrog@123  home/runner/work/android-CI/android-CI/apk-files/qa/debug/app-debug-02-04-2024-10-45-07.apk android-artifact/
-         jfrog rt u --url http://54.234.41.180:8082/ui/repos/tree/General/gradle-dev --user admin --password Jfrog@123  home/runner/work/android-CI/android-CI/apk-files/qa/release/app-release-unsigned-02-04-2024-10-45-07.apk android-artifact/
-         elif [[ ${{ github.ref }} == 'refs/heads/main' ]]; then
+         jfrog rt u --url http://54.234.41.180:8082/ui/repos/tree/General/gradle-dev --user admin --password Jfrog@123  apk-files/qa/debug/app-debug-${CURRENT_DATE_TIME}.apk android-artifact/
+         jfrog rt u --url http://54.234.41.180:8082/ui/repos/tree/General/gradle-dev --user admin --password Jfrog@123  apk-files/qa/release/app-release-unsigned-${CURRENT_DATE_TIME}.apk android-artifact/
          jfrog rt u --url http://54.234.41.180:8082/ui/repos/tree/General/gradle-dev --user admin --password Jfrog@123  home/runner/work/android-CI/android-CI/apk-files/main/debug/app-debug-02-04-2024-10-45-07.apk android-artifact/
          jfrog rt u --url http://54.234.41.180:8082/ui/repos/tree/General/gradle-dev --user admin --password Jfrog@123  home/runner/work/android-CI/android-CI/apk-files/main/release/app-release-unsigned-02-04-2024-10-45-07.apk android-artifact/
          fi

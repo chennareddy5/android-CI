@@ -13,6 +13,7 @@ buildscript {
 
 plugins {
     id "org.sonarqube" version "3.0"
+    id 'com.jfrog.artifactory' version "4.26.2"
 }
 
 task clean(type: Delete) {

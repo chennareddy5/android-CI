@@ -50,10 +50,6 @@ jacoco {
     toolVersion = "0.8.7"
 }
 
-test {
-    finalizedBy jacocoTestReport // This ensures that jacocoTestReport is run after the tests
-}
-
 jacocoTestReport {
     reports {
         xml.enabled true

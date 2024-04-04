@@ -62,7 +62,7 @@ jobs:
           CURRENT_DATE_TIME: ${{ steps.date.outputs.current_date_time }}
         run: |
           echo "Current date and time: $CURRENT_DATE_TIME"
-          cd android-demo-app && ./gradlew build sonar --info
+          cd android-demo-app && ./gradlew build sonar --info --debug
       - name: Copy APK files to a directory
         run: |
           mkdir -p ${{ github.workspace }}/apk-files/debug ${{ github.workspace }}/apk-files/release

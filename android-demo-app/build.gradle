@@ -15,6 +15,7 @@ buildscript {
 
 plugins {
     id "org.sonarqube" version "3.0" // Update the syntax here
+    id 'jacoco'
 }
 
 task clean(type: Delete) {
@@ -42,5 +43,20 @@ tasks.withType(org.sonarqube.gradle.SonarQubeTask) {
         properties {
             property "sonar.gradle.skipCompile", "true"
         }
+    }
+}
+
+jacoco {
+    toolVersion = "0.8.7"
+}
+
+test {
+    finalizedBy jacocoTestReport // This ensures that jacocoTestReport is run after the tests
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        html.enabled true
     }
 }
